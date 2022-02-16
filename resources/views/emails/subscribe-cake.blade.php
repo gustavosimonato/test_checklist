@@ -1,6 +1,6 @@
 @component('mail::message')
 # Bolo {{$status}}!
 
-O bolo {{$cake}} está {{$status}}.
+O {{$cake}} está {{$status}}.
 
 @endcomponent
