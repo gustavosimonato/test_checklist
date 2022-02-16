@@ -19,7 +19,8 @@ class InterestedController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'cake_id' => 'required',
-            'email' => 'email',
+            'nome' => 'required',
+            'email' => 'email'
         ]);
 
         if ($validator->fails()) {
@@ -30,6 +31,7 @@ class InterestedController extends Controller
         return $this->service->subscribe(
             $request->only(
                 'cake_id',
+                'nome',
                 'email'
             )
         );

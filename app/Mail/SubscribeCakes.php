@@ -7,22 +7,30 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SubscribeCakes extends Mailable
+class SubscribeCakes extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public function __construct()
+    public $tries = 3;
+
+    private $email;
+    private $bolo;
+    private $disponibilidade;
+
+    public function __construct($email, $bolo, $disponibilidade)
     {
-        //
+        $this->email = $email;
+        $this->bolo = $bolo;
+        $this->disponibilidade = $disponibilidade;
     }
 
     public function build()
     {
-        $this->subject('teste do gustavo');
-        $this->to('gsimonatofilho@gmail.com','gustavo');
+        $this->subject('casa de bolos');
+        $this->to($this->email);
         return $this->markdown('emails.subscribe-cake', [
-            'cake' => 'bolo de morango',
-            'status' => 'disponivel'
+            'cake' => $this->bolo,
+            'status' => $this->disponibilidade
         ]);
     }
 }

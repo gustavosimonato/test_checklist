@@ -15,10 +15,14 @@ class Interesteds extends Migration
     {
         Schema::create('interesteds', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 45);
             $table->string('email', 45);
             $table->string('status', 45);
             $table->unsignedBigInteger('cakeId');
-            $table->foreign('cakeId')->references('id')->on('cakes');
+            $table->foreign('cakeId')
+                ->references('id')
+                ->on('cakes')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

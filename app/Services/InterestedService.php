@@ -15,30 +15,47 @@ class InterestedService
 {
     public function subscribe(array $subscribeData)
     {
-        
-        Mail::send(new SubscribeCakes());
-
-        return ['ok' => 'e-mail enviado com sucesso'];
-
-        /* try {
+        try {
             DB::beginTransaction();
 
-            $cake = Cake::where('id', $subscribeData['cake_id'])->first();
+            $cake = Cake::where('id', $subscribeData['cake_id'])
+                ->first();
+
             if (empty($cake)) {
-                return ['error' => 'Bolo não existe ou está indisponível'];
+                return ['error' => 'erro ao cadastrar e-mail'];
+            }
+
+            if ($cake->quantity > 0) {
+                $mail = new SubscribeCakes(
+                    $subscribeData['email'],
+                    $cake->name,
+                    'disponivel'
+                );
+            } else {
+                $mail = new SubscribeCakes(
+                    $subscribeData['email'],
+                    $cake->name,
+                    'indisponivel'
+                );
             }
 
             $interested = new Interested();
+            $interested->name = $subscribeData['nome'];
             $interested->email = $subscribeData['email'];
             $interested->status = 'active';
             $interested->cakeId = $subscribeData['cake_id'];
             $interested->save();
 
             DB::commit();
-            return new InterestedResource($interested);
+
+            $retorno = new InterestedResource($interested);
+
+            Mail::send($mail);
+
+            return $retorno;
         } catch (\Exception $exception) {
             DB::rollback();
             return ['error' => 'erro ao cadastrar e-mail'];
-        } */
+        }
     }
 }
