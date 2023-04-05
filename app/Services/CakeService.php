@@ -6,7 +6,7 @@ use App\Http\Resources\CakeResource;
 use App\Models\Cake;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use NumberFormatter;
+// use NumberFormatter;
 
 class CakeService
 {
@@ -20,15 +20,15 @@ class CakeService
         try {
             DB::beginTransaction();
 
-            $formatador = new NumberFormatter('de_DE', NumberFormatter::DECIMAL);
+            // $formatador = new NumberFormatter('de_DE', NumberFormatter::DECIMAL);
 
-            $peso = $formatador->parse((int) $createData['peso']);
-            $valor = $formatador->parse((int) $createData['valor']);
+            // $peso = $formatador->parse((int) $createData['peso']);
+            // $valor = $formatador->parse((int) $createData['valor']);
 
             $newCake = new Cake();
             $newCake->name = $createData['nome'];
-            $newCake->weight = $peso;
-            $newCake->value = $valor;
+            $newCake->weight = $createData['peso'];
+            $newCake->value = $createData['valor'];
             $newCake->quantity = $createData['quantidade'];
             $newCake->save();
 
